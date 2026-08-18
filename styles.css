@@ -311,6 +311,33 @@ footer .wordmark {
   color: var(--muted);
 }
 
+button.btn {
+  font: inherit;
+  border: 0;
+  cursor: pointer;
+}
+
+#order label {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  color: var(--muted);
+  margin: 14px 0;
+}
+
+#order select {
+  font: inherit;
+  background: var(--bg);
+  color: var(--fg);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 10px 12px;
+}
+
+footer a {
+  color: inherit;
+}
+
 @media (max-width: 800px) {
   .install-stage {
     grid-template-columns: 1fr;
