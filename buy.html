@@ -37,8 +37,8 @@
           </article>
           <article class="card">
             <p class="tag">2</p>
-            <h3>监护人完成付款</h3>
-            <p>复制下方订单说明，由监护人付款。本站不在软件里放支付表单。</p>
+            <h3>扫码付设定金额</h3>
+            <p>选好周期后，用微信或支付宝扫对应收款码。未成年须由监护人代扫。</p>
           </article>
           <article class="card">
             <p class="tag">3</p>
@@ -47,8 +47,8 @@
           </article>
         </div>
         <form id="order" class="card" style="margin-top:22px">
-          <p class="tag">订单</p>
-          <h3>生成购买说明</h3>
+          <p class="tag">付款</p>
+          <h3>选套餐，扫码付这一档。</h3>
           <p>
             <label>软件
               <select name="product">
@@ -61,17 +61,29 @@
           <p>
             <label>周期
               <select name="plan">
-                <option value="月 / ¥19.9 / $9.9">月 · ¥19.9 · $9.9</option>
-                <option value="季 / ¥49.9 / $29.9">季 · ¥49.9 · $29.9</option>
-                <option value="年 / ¥149.9 / $59.9">年 · ¥149.9 · $59.9</option>
+                <option value="19.9" data-label="月">月 · ¥19.9 · $9.9</option>
+                <option value="49.9" data-label="季">季 · ¥49.9 · $29.9</option>
+                <option value="149.9" data-label="年">年 · ¥149.9 · $59.9</option>
               </select>
             </label>
           </p>
+          <p class="pay-amount" id="pay-amount">应付 ¥19.9</p>
+          <div class="pay-codes" id="pay-codes">
+            <figure class="pay-code" data-channel="wechat">
+              <img alt="微信收款码" />
+              <figcaption>微信</figcaption>
+            </figure>
+            <figure class="pay-code" data-channel="alipay">
+              <img alt="支付宝收款码" />
+              <figcaption>支付宝</figcaption>
+            </figure>
+          </div>
+          <p class="hint" id="pay-missing">还没有收款码图片。把微信 / 支付宝收款码发给我，或放到网站 <code>pay/</code> 目录：<code>wechat-19.9.png</code>、<code>alipay-19.9.png</code> 各三档。</p>
           <div class="hero-actions">
             <button class="btn" type="submit">复制订单说明</button>
             <a class="btn ghost" href="downloads/">先下载试用</a>
           </div>
-          <p class="hint" id="copied" hidden>已复制。把这段发给监护人完成付款。</p>
+          <p class="hint" id="copied" hidden>已复制。扫码付完后把这段发给工作室，以便发放许可证。</p>
         </form>
         <p class="hint" style="margin-top:22px">
           <a href="terms.html">服务条款</a> ·
@@ -85,10 +97,61 @@
       <p>介绍与定价 · 软件在电脑端 · 监护人代付</p>
     </footer>
     <script>
-      document.getElementById("order").addEventListener("submit", async (event) => {
+      const form = document.getElementById("order");
+      const amountEl = document.getElementById("pay-amount");
+      const missingEl = document.getElementById("pay-missing");
+
+      function planMeta() {
+        const select = form.plan;
+        const option = select.selectedOptions[0];
+        return {
+          product: form.product.value,
+          price: select.value,
+          period: option.dataset.label,
+          label: option.textContent.trim(),
+        };
+      }
+
+      function showCodes() {
+        const { price } = planMeta();
+        amountEl.textContent = "应付 ¥" + price;
+        missingEl.hidden = false;
+        document.querySelectorAll(".pay-code").forEach((figure) => {
+          const channel = figure.dataset.channel;
+          const img = figure.querySelector("img");
+          const urls = ["pay/" + channel + "-" + price + ".png", "pay/" + channel + ".png"];
+          let index = 0;
+          img.onload = () => {
+            figure.hidden = false;
+            missingEl.hidden = true;
+          };
+          img.onerror = () => {
+            index += 1;
+            if (index < urls.length) {
+              img.src = urls[index];
+              return;
+            }
+            figure.hidden = true;
+          };
+          figure.hidden = true;
+          img.src = urls[0];
+        });
+      }
+
+      form.product.addEventListener("change", showCodes);
+      form.plan.addEventListener("change", showCodes);
+      showCodes();
+
+      form.addEventListener("submit", async (event) => {
         event.preventDefault();
-        const data = new FormData(event.target);
-        const text = ["KangStudio 购买", "软件：Kang " + data.get("product"), "周期：" + data.get("plan"), "付款后请向工作室索取许可证，在电脑端软件里激活。未成年须监护人代付。"].join("\n");
+        const meta = planMeta();
+        const text = [
+          "KangStudio 购买",
+          "软件：Kang " + meta.product,
+          "周期：" + meta.label,
+          "金额：¥" + meta.price,
+          "已扫码付款。请发放许可证。未成年须监护人代付。",
+        ].join("\n");
         try {
           await navigator.clipboard.writeText(text);
         } catch {

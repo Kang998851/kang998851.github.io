@@ -334,6 +334,50 @@ button.btn {
   padding: 10px 12px;
 }
 
+.pay-amount {
+  font-family: Syne, sans-serif;
+  font-size: clamp(2rem, 6vw, 3.4rem);
+  font-weight: 800;
+  letter-spacing: -0.05em;
+  margin: 8px 0 18px;
+}
+
+.pay-codes {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin: 0 0 18px;
+}
+
+.pay-code {
+  margin: 0;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: var(--bg);
+  text-align: center;
+}
+
+.pay-code img {
+  width: min(100%, 220px);
+  aspect-ratio: 1;
+  object-fit: contain;
+  background: #eceae4;
+  border-radius: 12px;
+}
+
+.pay-code figcaption {
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+@media (max-width: 800px) {
+  .pay-codes {
+    grid-template-columns: 1fr;
+  }
+}
+
 footer a {
   color: inherit;
 }
