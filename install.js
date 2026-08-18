@@ -7,6 +7,7 @@ const APPS = [
     kicker: "Learn",
     blurb: "导入资料，按天闯关。",
     mark: "L",
+    logo: new URL("./logos/kang-learn-lg.svg", import.meta.url).href,
     mac: `${RELEASE}Kang-Learn-mac.zip`,
   },
   {
@@ -15,6 +16,7 @@ const APPS = [
     kicker: "Office",
     blurb: "纪要、周报、报价、待办。",
     mark: "O",
+    logo: new URL("./logos/kang-office-lg.svg", import.meta.url).href,
     mac: `${RELEASE}Kang-Office-mac.zip`,
   },
   {
@@ -23,6 +25,7 @@ const APPS = [
     kicker: "Data",
     blurb: "清洗、分类、导出。",
     mark: "D",
+    logo: new URL("./logos/kang-data-lg.svg", import.meta.url).href,
     mac: `${RELEASE}Kang-Data-mac.zip`,
   },
 ];
@@ -60,7 +63,7 @@ function mountInstall(root) {
         <p>${app.blurb}</p>
         <div class="install-stage" aria-label="把 ${app.name} 拖到文件夹下载">
           <button type="button" class="app-icon" draggable="true" data-href="${href}" data-name="${name}" aria-label="拖动 ${app.name}">
-            <span class="app-mark">${app.mark}</span>
+            <img class="app-mark" src="${app.logo}" alt="" width="72" height="72" draggable="false">
             <span class="app-label">${app.name}</span>
           </button>
           <div class="install-arrow" aria-hidden="true"><span></span></div>

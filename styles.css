@@ -42,6 +42,15 @@ footer {
   font-size: 1.25rem;
   color: inherit;
   text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.wordmark img {
+  width: 28px;
+  height: 28px;
+  border-radius: 7px;
 }
 
 nav {
@@ -250,14 +259,15 @@ footer .wordmark {
   width: 72px;
   height: 72px;
   border-radius: 18px;
-  background: var(--fg);
-  color: var(--bg);
-  display: grid;
-  place-items: center;
-  font-family: Syne, sans-serif;
-  font-size: 34px;
-  font-weight: 800;
-  letter-spacing: -0.06em;
+  display: block;
+}
+
+.product-logo {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  margin-bottom: 12px;
+  display: block;
 }
 
 .app-label,
