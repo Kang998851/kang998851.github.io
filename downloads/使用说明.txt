@@ -1,9 +1,9 @@
-KangStudio 电脑端
+KangStudio 电脑端（Mac）
 
-1. 需要先安装 Node.js：https://nodejs.org/
-2. 解压本文件夹
-3. Mac：双击「打开」命令文件
-4. Windows：双击「打开」批处理文件
-5. 第一次打开会安装运行库，之后可直接用
+1. 下载对应 zip
+2. 解压，得到 Kang Learn.app / Kang Office.app / Kang Data.app
+3. 把 .app 拖到桌面或「应用程序」
+4. 双击打开。不需要 Node.js
+5. 若系统提示无法打开，按住 Control 再点图标，选打开
 
 软件内不收款。升级请回官网，未成年须由监护人代付。

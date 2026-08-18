@@ -1,3 +1,5 @@
+const RELEASE = "https://github.com/Kang998851/kang998851.github.io/releases/download/v0.1.0/";
+
 const APPS = [
   {
     id: "learn",
@@ -5,8 +7,7 @@ const APPS = [
     kicker: "Learn",
     blurb: "导入资料，按天闯关。",
     mark: "L",
-    mac: "Kang-Learn-mac.zip",
-    win: "Kang-Learn-win.zip",
+    mac: `${RELEASE}Kang-Learn-mac.zip`,
   },
   {
     id: "office",
@@ -14,8 +15,7 @@ const APPS = [
     kicker: "Office",
     blurb: "纪要、周报、报价、待办。",
     mark: "O",
-    mac: "Kang-Office-mac.zip",
-    win: "Kang-Office-win.zip",
+    mac: `${RELEASE}Kang-Office-mac.zip`,
   },
   {
     id: "data",
@@ -23,17 +23,16 @@ const APPS = [
     kicker: "Data",
     blurb: "清洗、分类、导出。",
     mark: "D",
-    mac: "Kang-Data-mac.zip",
-    win: "Kang-Data-win.zip",
+    mac: `${RELEASE}Kang-Data-mac.zip`,
   },
 ];
 
-function isMac() {
-  return /Mac|iPhone|iPad/.test(navigator.platform) || /Mac OS X/.test(navigator.userAgent);
+function fileFor(app) {
+  return app.mac;
 }
 
-function fileFor(app) {
-  return isMac() ? app.mac : app.win;
+function fileName(href) {
+  return href.split("/").pop();
 }
 
 function abs(href) {
@@ -50,27 +49,27 @@ function save(href, name) {
   a.remove();
 }
 
-function mountInstall(root, base) {
+function mountInstall(root) {
   root.innerHTML = APPS.map((app) => {
-    const file = fileFor(app);
-    const href = `${base}${file}`;
+    const href = fileFor(app);
+    const name = fileName(href);
     return `
       <article class="install-row" data-app="${app.id}">
         <p class="tag">${app.kicker}</p>
         <h3>${app.name}</h3>
         <p>${app.blurb}</p>
         <div class="install-stage" aria-label="把 ${app.name} 拖到文件夹下载">
-          <button type="button" class="app-icon" draggable="true" data-href="${href}" data-name="${file}" aria-label="拖动 ${app.name}">
+          <button type="button" class="app-icon" draggable="true" data-href="${href}" data-name="${name}" aria-label="拖动 ${app.name}">
             <span class="app-mark">${app.mark}</span>
             <span class="app-label">${app.name}</span>
           </button>
           <div class="install-arrow" aria-hidden="true"><span></span></div>
-          <button type="button" class="desk-folder" data-href="${href}" data-name="${file}" aria-label="放到桌面，下载 ${app.name}">
+          <button type="button" class="desk-folder" data-href="${href}" data-name="${name}" aria-label="放到桌面，下载 ${app.name}">
             ${folderSvg()}
             <span>桌面</span>
           </button>
         </div>
-        <p class="install-caption">按住左边图标，拖进右边文件夹。软件会下载到本机。</p>
+        <p class="install-caption">解压后得到 ${app.name}.app，拖到桌面即可打开。不需要 Node.js。</p>
       </article>
     `;
   }).join("");
@@ -118,4 +117,4 @@ function folderSvg() {
 }
 
 const root = document.querySelector("[data-install]");
-if (root) mountInstall(root, root.getAttribute("data-base") || "./");
+if (root) mountInstall(root);
