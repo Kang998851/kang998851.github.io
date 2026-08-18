@@ -11,6 +11,7 @@
       href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Outfit:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
@@ -97,39 +98,11 @@
       <section id="download" class="section">
         <h2>下载电脑端</h2>
         <p class="hint">
-          三款都是安装到电脑里用的软件，不是网页。下载后在本地打开，先进入本机账户。需要升级时回到本站付款。软件内不收款。未成年须由监护人代付。
+          按住软件图标，拖进右边文件夹，就会下载到本机。也可以把图标拖到访达的桌面。
         </p>
-        <div class="grid">
-          <article class="card">
-            <p class="tag">Learn</p>
-            <h3>Kang Learn</h3>
-            <p>Windows 与 Mac。打开后先进入，再导入资料闯关。</p>
-            <div class="hero-actions">
-              <a class="btn" href="downloads/Kang-Learn-mac.zip">Mac</a>
-              <a class="btn ghost" href="downloads/Kang-Learn-win.zip">Windows</a>
-            </div>
-          </article>
-          <article class="card">
-            <p class="tag">Office</p>
-            <h3>Kang Office</h3>
-            <p>Windows 与 Mac。打开后先进入，再写纪要、周报、报价和待办。</p>
-            <div class="hero-actions">
-              <a class="btn" href="downloads/Kang-Office-mac.zip">Mac</a>
-              <a class="btn ghost" href="downloads/Kang-Office-win.zip">Windows</a>
-            </div>
-          </article>
-          <article class="card">
-            <p class="tag">Data</p>
-            <h3>Kang Data</h3>
-            <p>Windows 与 Mac。打开后先进入，再清洗、分类、导出。</p>
-            <div class="hero-actions">
-              <a class="btn" href="downloads/Kang-Data-mac.zip">Mac</a>
-              <a class="btn ghost" href="downloads/Kang-Data-win.zip">Windows</a>
-            </div>
-          </article>
-        </div>
+        <div class="install-grid" data-install data-base="downloads/"></div>
         <p class="hint" style="margin-top: 18px">
-          下载后解压。Mac 双击「打开 xxx.command」，Windows 双击「打开 xxx.bat」。第一次打开会安装运行库。需要
+          解压后打开。第一次会安装运行库，需要
           <a href="https://nodejs.org/" style="color: inherit">Node.js</a>。
         </p>
       </section>
@@ -139,5 +112,6 @@
       <p class="wordmark">KangStudio</p>
       <p>介绍与定价 · 软件在电脑端 · 监护人代付</p>
     </footer>
+    <script type="module" src="install.js"></script>
   </body>
 </html>
