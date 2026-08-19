@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Payment complete · KangStudio</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="index.html">KangStudio</a>
+    </div>
+  </header>
+  <main class="section legal-page">
+    <p class="eyebrow">Checkout</p>
+    <h1 id="success-title">Checking payment…</h1>
+    <p id="success-copy">Confirming the Stripe charge.</p>
+    <p class="license-box" id="license-box" hidden>
+      <label class="field-label" for="license">License for the desktop app</label>
+      <input class="field" id="license" readonly>
+      <button class="btn btn-solid" type="button" id="copy-license">Copy license</button>
+    </p>
+    <p class="hero-actions"><a class="btn btn-ghost" href="index.html#download">Back to download</a></p>
+  </main>
+  <script src="checkout-success.js"></script>
+</body>
+</html>

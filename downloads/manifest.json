@@ -1,0 +1,45 @@
+{
+  "version": "1.0.0",
+  "updated": "2026-08-20",
+  "apps": [
+    {
+      "id": "learn",
+      "name": "Kang Learn",
+      "version": "1.0.0",
+      "platforms": {
+        "mac-arm64": {
+          "file": "Kang-Learn-1.0.0-mac-arm64.zip",
+          "size": 106505562,
+          "label": "Mac (Apple silicon)",
+          "url": "https://github.com/Kang998851/kang998851.github.io/releases/download/v1.0.0/Kang-Learn-1.0.0-mac-arm64.zip"
+        }
+      }
+    },
+    {
+      "id": "office",
+      "name": "Kang Office",
+      "version": "1.0.0",
+      "platforms": {
+        "mac-arm64": {
+          "file": "Kang-Office-1.0.0-mac-arm64.zip",
+          "size": 94004411,
+          "label": "Mac (Apple silicon)",
+          "url": "https://github.com/Kang998851/kang998851.github.io/releases/download/v1.0.0/Kang-Office-1.0.0-mac-arm64.zip"
+        }
+      }
+    },
+    {
+      "id": "data",
+      "name": "Kang Data",
+      "version": "1.0.0",
+      "platforms": {
+        "mac-arm64": {
+          "file": "Kang-Data-1.0.0-mac-arm64.zip",
+          "size": 93975669,
+          "label": "Mac (Apple silicon)",
+          "url": "https://github.com/Kang998851/kang998851.github.io/releases/download/v1.0.0/Kang-Data-1.0.0-mac-arm64.zip"
+        }
+      }
+    }
+  ]
+}

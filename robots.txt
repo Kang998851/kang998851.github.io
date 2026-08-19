@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://kang998851.github.io/sitemap.xml

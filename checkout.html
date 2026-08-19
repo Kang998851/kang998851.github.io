@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Checkout · KangStudio</title>
+  <meta name="description" content="Pay for a KangStudio desktop app upgrade with a card. Stripe hosts the card fields. If you are under 18, a parent or guardian must pay.">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://js.stripe.com/v3/"></script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="index.html#top" aria-label="KangStudio home">
+        <svg class="brand-mark" viewBox="0 0 32 32" width="22" height="22" aria-hidden="true">
+          <rect width="32" height="32" rx="8" fill="currentColor"/>
+          <path fill="#0a0a0a" d="M11 8h3.1v6.15L20.2 8H24l-6.7 7.35L24.2 24H20.3l-6.2-7.4V24H11V8z"/>
+        </svg>
+        <span>KangStudio</span>
+      </a>
+      <nav class="nav" aria-label="Site">
+        <a href="index.html#pricing">Pricing</a>
+        <a class="btn btn-solid btn-sm" href="index.html#download">Download</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="checkout-page">
+    <div class="checkout-layout">
+      <section class="checkout-form-col">
+        <p class="eyebrow">Checkout</p>
+        <h1>Pay to upgrade</h1>
+        <p class="lede">Digital upgrade. No shipping. If checkout is not open yet, download the trial and keep working locally. If you are under 18, a parent or guardian must pay.</p>
+
+        <section class="setup-card" id="stripe-setup" hidden>
+          <h2>Connect Stripe to take payment</h2>
+          <p>Create a Stripe account, then paste the API keys from the Dashboard. Test keys start with <code>pk_test_</code> / <code>sk_test_</code>. Live keys take real money.</p>
+          <p><a class="btn btn-ghost btn-sm" href="https://dashboard.stripe.com/apikeys" target="_blank" rel="noreferrer">Open Stripe API keys</a></p>
+          <form class="pay-form" id="setup-form">
+            <label class="field-label" for="pk">Publishable key</label>
+            <input class="field" id="pk" name="pk" type="text" autocomplete="off" spellcheck="false" placeholder="pk_test_... or pk_live_..." required>
+            <label class="field-label" for="sk">Secret key</label>
+            <input class="field" id="sk" name="sk" type="password" autocomplete="off" spellcheck="false" placeholder="sk_test_... or sk_live_..." required>
+            <p class="form-status" id="setup-status" role="status"></p>
+            <button class="btn btn-solid btn-pay" type="submit">Save keys and enable payment</button>
+          </form>
+        </section>
+
+        <form class="pay-form" id="pay-form" method="post" action="#" hidden>
+          <label class="field-label" for="email">Email for receipt</label>
+          <input class="field" id="email" name="email" type="email" inputmode="email" autocomplete="email" required placeholder="you@example.com">
+
+          <h2 class="pay-heading">Payment</h2>
+          <p class="pay-secure" id="pay-hint">All transactions are secure and encrypted. Card number, expiry, and CVC open in the Stripe window below.</p>
+
+          <div class="payment-window" id="payment-window" hidden></div>
+
+          <label class="check-line legal-check">
+            <input type="checkbox" id="agree" name="agree" required>
+            <span>I have read and agree to the <a href="privacy.html">privacy policy</a> &amp; <a href="terms.html">terms of service</a>. If I am under 18, a parent or guardian is paying.</span>
+          </label>
+
+          <p class="form-status" id="form-status" role="status"></p>
+          <button class="btn btn-solid btn-pay" id="pay-button" type="submit">Open payment window</button>
+        </form>
+      </section>
+
+      <aside class="checkout-summary" aria-label="Order summary">
+        <div class="summary-item">
+          <div class="summary-mark" aria-hidden="true">K</div>
+          <div>
+            <p class="summary-name" id="summary-name">Kang Office</p>
+            <p class="summary-meta" id="summary-meta">Year · International</p>
+          </div>
+          <p class="summary-price" id="summary-price">$59.9</p>
+        </div>
+
+        <div class="learn-only" hidden>
+          <p class="field-label">Kang Learn plan</p>
+          <div class="segment" role="group" aria-label="Kang Learn plan">
+            <label><input class="sr-only" type="radio" name="tier" id="tier-pro" value="pro" checked> Pro</label>
+            <label><input class="sr-only" type="radio" name="tier" id="tier-max" value="max"> Max</label>
+          </div>
+        </div>
+
+        <p class="field-label">Billing cycle</p>
+        <div class="segment" role="group" aria-label="Billing cycle">
+          <label><input class="sr-only" type="radio" name="cycle" id="cycle-month" value="month"> Month</label>
+          <label><input class="sr-only" type="radio" name="cycle" id="cycle-quarter" value="quarter"> Quarter</label>
+          <label><input class="sr-only" type="radio" name="cycle" id="cycle-year" value="year" checked> Year</label>
+        </div>
+
+        <dl class="totals">
+          <div><dt>Subtotal</dt><dd id="summary-subtotal">$59.9</dd></div>
+          <div><dt>Shipping</dt><dd>Digital — none</dd></div>
+          <div class="totals-sum"><dt>Total</dt><dd><span id="summary-currency">USD</span> <strong id="summary-total">$59.9</strong></dd></div>
+        </dl>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <p class="footer-legal">If you are under 18, a parent or guardian must complete payment. We do not ask anyone to pay without a parent.</p>
+    <p class="footer-copy">© 2026 KangStudio</p>
+  </footer>
+  <script src="checkout.js"></script>
+</body>
+</html>
