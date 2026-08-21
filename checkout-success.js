@@ -3,15 +3,22 @@
   const copy = document.getElementById("success-copy");
   const box = document.getElementById("license-box");
   const license = document.getElementById("license");
-  const sessionId = new URLSearchParams(location.search).get("session_id") || "";
+  const params = new URLSearchParams(location.search);
+  // PayPal returns ?token=ORDER_ID&PayerID=...
+  const orderId =
+    params.get("token") ||
+    params.get("order_id") ||
+    params.get("checkout_id") ||
+    params.get("session_id") ||
+    "";
 
-  fetch(`/api/session?session_id=${encodeURIComponent(sessionId)}`)
+  fetch(`/api/session?token=${encodeURIComponent(orderId)}`)
     .then((res) => res.json())
     .then((data) => {
       if (data.error) throw new Error(data.error);
       if (!data.paid) {
         title.textContent = "Payment not finished";
-        copy.textContent = "Stripe did not confirm this charge. Return to checkout and try again.";
+        copy.textContent = "PayPal did not confirm this charge. Return to checkout and try again.";
         return;
       }
       title.textContent = "Payment received";
