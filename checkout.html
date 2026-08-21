@@ -4,13 +4,12 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Checkout · KangStudio</title>
-  <meta name="description" content="Pay for a KangStudio desktop app upgrade with a card. Stripe hosts the card fields. If you are under 18, a parent or guardian must pay.">
+  <meta name="description" content="Pay for a KangStudio desktop app upgrade with PayPal or an international Mastercard / Visa. If you are under 18, a parent or guardian must pay.">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
-  <script src="https://js.stripe.com/v3/"></script>
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
@@ -36,19 +35,24 @@
       <section class="checkout-form-col">
         <p class="eyebrow">Checkout</p>
         <h1>Pay to upgrade</h1>
-        <p class="lede">Digital upgrade. No shipping. If checkout is not open yet, download the trial and keep working locally. If you are under 18, a parent or guardian must pay.</p>
+        <p class="lede">Digital upgrade. No shipping. Pay with PayPal or an international Mastercard / Visa (CMB Mastercard debit works when overseas online payment is enabled). If you are under 18, a parent or guardian must pay.</p>
 
-        <section class="setup-card" id="stripe-setup" hidden>
-          <h2>Connect Stripe to take payment</h2>
-          <p>Create a Stripe account, then paste the API keys from the Dashboard. Test keys start with <code>pk_test_</code> / <code>sk_test_</code>. Live keys take real money.</p>
-          <p><a class="btn btn-ghost btn-sm" href="https://dashboard.stripe.com/apikeys" target="_blank" rel="noreferrer">Open Stripe API keys</a></p>
+        <section class="setup-card" id="pay-setup" hidden>
+          <h2>Connect PayPal to take payment</h2>
+          <p>Create a PayPal Business app, then paste the REST Client ID and Secret. Sandbox is for test checkout. Live money can later be withdrawn to China Merchants Bank (招商银行).</p>
+          <p><a class="btn btn-ghost btn-sm" href="https://developer.paypal.com/dashboard/applications" target="_blank" rel="noreferrer">Open PayPal Developer</a></p>
           <form class="pay-form" id="setup-form">
-            <label class="field-label" for="pk">Publishable key</label>
-            <input class="field" id="pk" name="pk" type="text" autocomplete="off" spellcheck="false" placeholder="pk_test_... or pk_live_..." required>
-            <label class="field-label" for="sk">Secret key</label>
-            <input class="field" id="sk" name="sk" type="password" autocomplete="off" spellcheck="false" placeholder="sk_test_... or sk_live_..." required>
+            <label class="field-label" for="paypal-client">Client ID</label>
+            <input class="field" id="paypal-client" name="paypal-client" type="text" autocomplete="off" spellcheck="false" placeholder="PayPal Client ID" required>
+            <label class="field-label" for="paypal-secret">Client Secret</label>
+            <input class="field" id="paypal-secret" name="paypal-secret" type="password" autocomplete="off" spellcheck="false" placeholder="PayPal Secret" required>
+            <label class="field-label" for="paypal-mode">Mode</label>
+            <select class="field" id="paypal-mode" name="paypal-mode">
+              <option value="sandbox">Sandbox (test)</option>
+              <option value="live">Live</option>
+            </select>
             <p class="form-status" id="setup-status" role="status"></p>
-            <button class="btn btn-solid btn-pay" type="submit">Save keys and enable payment</button>
+            <button class="btn btn-solid btn-pay" type="submit">Save and enable payment</button>
           </form>
         </section>
 
@@ -57,9 +61,7 @@
           <input class="field" id="email" name="email" type="email" inputmode="email" autocomplete="email" required placeholder="you@example.com">
 
           <h2 class="pay-heading">Payment</h2>
-          <p class="pay-secure" id="pay-hint">All transactions are secure and encrypted. Card number, expiry, and CVC open in the Stripe window below.</p>
-
-          <div class="payment-window" id="payment-window" hidden></div>
+          <p class="pay-secure" id="pay-hint">You will continue on PayPal’s secure checkout page.</p>
 
           <label class="check-line legal-check">
             <input type="checkbox" id="agree" name="agree" required>
@@ -67,7 +69,7 @@
           </label>
 
           <p class="form-status" id="form-status" role="status"></p>
-          <button class="btn btn-solid btn-pay" id="pay-button" type="submit">Open payment window</button>
+          <button class="btn btn-solid btn-pay" id="pay-button" type="submit">Continue to PayPal</button>
         </form>
       </section>
 
@@ -78,7 +80,7 @@
             <p class="summary-name" id="summary-name">Kang Office</p>
             <p class="summary-meta" id="summary-meta">Year · International</p>
           </div>
-          <p class="summary-price" id="summary-price">$59.9</p>
+          <p class="summary-price" id="summary-price">$29.9</p>
         </div>
 
         <div class="learn-only" hidden>
@@ -97,9 +99,9 @@
         </div>
 
         <dl class="totals">
-          <div><dt>Subtotal</dt><dd id="summary-subtotal">$59.9</dd></div>
+          <div><dt>Subtotal</dt><dd id="summary-subtotal">$29.9</dd></div>
           <div><dt>Shipping</dt><dd>Digital — none</dd></div>
-          <div class="totals-sum"><dt>Total</dt><dd><span id="summary-currency">USD</span> <strong id="summary-total">$59.9</strong></dd></div>
+          <div class="totals-sum"><dt>Total</dt><dd><span id="summary-currency">USD</span> <strong id="summary-total">$29.9</strong></dd></div>
         </dl>
       </aside>
     </div>
