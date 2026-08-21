@@ -2,33 +2,32 @@
   const catalog = {
     learn: {
       name: "Kang Learn",
-      pro: { month: "$9.9", quarter: "$29.9", year: "$59.9" },
-      max: { month: "$11.9", quarter: "$35.9", year: "$71.9" }
+      pro: { month: "$6.9", quarter: "$17.9", year: "$49.9" },
+      max: { month: "$9.9", quarter: "$26.9", year: "$69.9" }
     },
     office: {
       name: "Kang Office",
-      month: "$9.9",
-      quarter: "$29.9",
-      year: "$59.9"
+      month: "$3.9",
+      quarter: "$10.9",
+      year: "$29.9"
     },
     data: {
       name: "Kang Data",
-      month: "$9.9",
-      quarter: "$29.9",
-      year: "$59.9"
+      month: "$3.9",
+      quarter: "$10.9",
+      year: "$29.9"
     }
   };
 
   const params = new URLSearchParams(location.search);
   const product = catalog[params.get("product")] ? params.get("product") : "office";
   const form = document.getElementById("pay-form");
-  const setupBox = document.getElementById("stripe-setup");
+  const setupBox = document.getElementById("pay-setup");
   const setupForm = document.getElementById("setup-form");
   const setupStatus = document.getElementById("setup-status");
   const status = document.getElementById("form-status");
   const payButton = document.getElementById("pay-button");
   const payHint = document.getElementById("pay-hint");
-  const mount = document.getElementById("payment-window");
   const learnBox = document.querySelector(".learn-only");
   const nameEl = document.getElementById("summary-name");
   const metaEl = document.getElementById("summary-meta");
@@ -36,9 +35,6 @@
   const subEl = document.getElementById("summary-subtotal");
   const totalEl = document.getElementById("summary-total");
   const currencyEl = document.getElementById("summary-currency");
-
-  let checkoutPage = null;
-  let publishableKey = "";
 
   nameEl.textContent = catalog[product].name;
   learnBox.hidden = product !== "learn";
@@ -49,6 +45,10 @@
     : "year";
   document.getElementById(`tier-${requestedTier}`).checked = true;
   document.getElementById(`cycle-${requestedCycle}`).checked = true;
+
+  if (params.get("cancelled") === "1") {
+    status.textContent = "PayPal checkout was cancelled. You can try again.";
+  }
 
   function currentPrice() {
     const cycle = document.querySelector('input[name="cycle"]:checked').value;
@@ -83,77 +83,24 @@
     currencyEl.textContent = "USD";
   }
 
-  async function destroyCheckout() {
-    if (!checkoutPage) return;
-    try {
-      checkoutPage.destroy();
-    } catch {
-      /* already gone */
-    }
-    checkoutPage = null;
-    mount.hidden = true;
-    mount.innerHTML = "";
-    payButton.hidden = false;
-  }
-
-  async function fetchClientSecret() {
-    const res = await fetch("/api/create-checkout-session", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(orderPayload())
-    });
-    const data = await res.json();
-    if (!res.ok || !data.clientSecret) {
-      throw new Error(data.error || "Could not start Stripe Checkout.");
-    }
-    return data.clientSecret;
-  }
-
-  async function openPaymentWindow() {
-    if (!window.Stripe) {
-      throw new Error("Stripe.js did not load.");
-    }
-    if (!publishableKey) {
-      throw new Error("Card checkout is not open yet. Download the trial from the homepage.");
-    }
-    await destroyCheckout();
-    const stripe = window.Stripe(publishableKey);
-    const options = { fetchClientSecret };
-    if (typeof stripe.createEmbeddedCheckoutPage === "function") {
-      checkoutPage = await stripe.createEmbeddedCheckoutPage(options);
-    } else if (typeof stripe.initEmbeddedCheckout === "function") {
-      checkoutPage = await stripe.initEmbeddedCheckout(options);
-    } else {
-      throw new Error("This Stripe.js build cannot embed Checkout. Update the Stripe script.");
-    }
-    mount.hidden = false;
-    checkoutPage.mount("#payment-window");
-    payButton.hidden = true;
-    status.textContent = "Enter the card in the Stripe window. Apple Pay and wallets appear there when available.";
-  }
-
   document.querySelector(".checkout-summary").addEventListener("change", () => {
     renderSummary();
-    destroyCheckout();
-    status.textContent = "Plan changed. Open the payment window again.";
+    if (!params.get("cancelled")) status.textContent = "";
   });
   renderSummary();
 
   function applyConfig(data) {
-    publishableKey = data.publishableKey || "";
-    const ready = Boolean(data.ready && publishableKey);
+    const ready = Boolean(data.ready);
     setupBox.hidden = ready || data.canSetup === false;
     form.hidden = !ready;
     if (ready) {
       payHint.textContent = data.livemode
-        ? "Live mode. This charge uses a real card."
-        : "Test mode. Use card 4242 4242 4242 4242, any future expiry, any CVC.";
-      status.textContent = "";
+        ? "Live PayPal checkout. Pay with PayPal or an international Mastercard / Visa (including CMB Mastercard debit when the bank allows overseas online payments)."
+        : "Sandbox mode. Use a PayPal sandbox buyer account — no real charge.";
+      status.textContent = status.textContent || "";
     } else if (data.canSetup === false) {
       status.textContent = "Card checkout is not open yet. Download the trial and use it on your computer.";
       form.hidden = true;
-    } else {
-      status.textContent = "";
     }
   }
 
@@ -168,25 +115,26 @@
 
   setupForm.addEventListener("submit", async (event) => {
     event.preventDefault();
-    setupStatus.textContent = "Checking keys with Stripe…";
+    setupStatus.textContent = "Checking PayPal credentials…";
     try {
-      const res = await fetch("/api/setup-stripe", {
+      const res = await fetch("/api/setup-paypal", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          publishableKey: document.getElementById("pk").value.trim(),
-          secretKey: document.getElementById("sk").value.trim()
+          clientId: document.getElementById("paypal-client").value.trim(),
+          clientSecret: document.getElementById("paypal-secret").value.trim(),
+          mode: document.getElementById("paypal-mode").value
         })
       });
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Could not save Stripe keys.");
-      document.getElementById("sk").value = "";
+      if (!res.ok) throw new Error(data.error || "Could not save PayPal settings.");
+      document.getElementById("paypal-secret").value = "";
       applyConfig({ ...data, canSetup: true });
       setupStatus.textContent = data.livemode
-        ? "Live keys saved. Real cards will be charged."
-        : "Test keys saved. You can pay with 4242 4242 4242 4242.";
+        ? "PayPal live mode saved. Real payments will be charged."
+        : "PayPal sandbox saved. You can test checkout.";
     } catch (err) {
-      setupStatus.textContent = err.message || "Could not connect Stripe.";
+      setupStatus.textContent = err.message || "Could not connect PayPal.";
     }
   });
 
@@ -194,13 +142,20 @@
     event.preventDefault();
     if (!form.reportValidity()) return;
     payButton.disabled = true;
-    status.textContent = "Opening Stripe payment window…";
+    status.textContent = "Opening PayPal…";
     try {
-      await openPaymentWindow();
+      const res = await fetch("/api/create-checkout-session", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(orderPayload())
+      });
+      const data = await res.json();
+      if (!res.ok || !data.checkoutUrl) {
+        throw new Error(data.error || "Could not start PayPal Checkout.");
+      }
+      location.href = data.checkoutUrl;
     } catch (err) {
-      status.textContent = err.message || "Could not open the payment window.";
-      payButton.hidden = false;
-    } finally {
+      status.textContent = err.message || "Could not open PayPal.";
       payButton.disabled = false;
     }
   });
