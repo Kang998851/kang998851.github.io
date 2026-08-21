@@ -125,24 +125,25 @@ input[type="checkbox"] {
 .brand {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: 11px;
   font-size: 16px;
   font-weight: 800;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.06em;
+  color: var(--text);
 }
 
-.brand-word {
-  display: inline-flex;
-  align-items: baseline;
+.brand-type {
+  display: block;
+  width: 148px;
+  height: 20px;
+  background: currentColor;
+  -webkit-mask: url("logos/kangstudio-type.svg") left center / contain no-repeat;
+  mask: url("logos/kangstudio-type.svg") left center / contain no-repeat;
 }
 
-.brand-kang {
-  font-weight: 800;
-}
-
-.brand-studio {
-  font-weight: 700;
-  opacity: 0.92;
+.footer-brand .brand-type {
+  width: 168px;
+  height: 22px;
 }
 
 .brand-mark {
@@ -545,9 +546,8 @@ input[type="checkbox"] {
 }
 
 .footer-brand {
-  margin-bottom: 10px;
+  margin-bottom: 12px;
   color: var(--text);
-  font-size: 16px;
 }
 
 .site-footer h2 {
