@@ -126,14 +126,29 @@ input[type="checkbox"] {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  font-size: 15px;
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+.brand-word {
+  display: inline-flex;
+  align-items: baseline;
+}
+
+.brand-kang {
+  font-weight: 800;
+}
+
+.brand-studio {
   font-weight: 700;
-  letter-spacing: 0.02em;
+  opacity: 0.92;
 }
 
 .brand-mark {
   color: var(--solid);
   flex: none;
+  border-radius: 7px;
 }
 
 .nav-check {
