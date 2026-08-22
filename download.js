@@ -15,18 +15,31 @@
         const macBtn = card.querySelector("[data-download-mac]");
         const winBtn = card.querySelector("[data-download-win]");
         const mac = app?.platforms?.["mac-arm64"];
+        const win = app?.platforms?.["win-x64"];
         if (mac && macBtn && (mac.url || mac.file)) {
           macBtn.href = mac.url || new URL(`downloads/${mac.file}`, document.baseURI).href;
           macBtn.removeAttribute("aria-disabled");
           macBtn.classList.remove("is-disabled");
-          if (note) {
-            note.textContent = `Version ${app.version} · Mac (Apple silicon) · ${formatSize(mac.size)}`;
+        }
+        if (win && winBtn && (win.url || win.file)) {
+          winBtn.href = win.url || new URL(`downloads/${win.file}`, document.baseURI).href;
+          winBtn.textContent = "Download for Windows";
+          winBtn.removeAttribute("aria-disabled");
+          winBtn.classList.remove("is-disabled");
+        } else if (winBtn) {
+          winBtn.textContent = "Windows — coming soon";
+        }
+        if (note && app) {
+          const parts = [`Version ${app.version}`];
+          if (win?.size) parts.push(`Windows · ${formatSize(win.size)}`);
+          if (mac?.size) parts.push(`Mac · ${formatSize(mac.size)}`);
+          if (parts.length > 1) {
+            note.textContent = parts.join(" · ");
+          } else {
+            note.textContent = "Downloads are not published yet.";
           }
         } else if (note) {
-          note.textContent = "Mac build is not published yet.";
-        }
-        if (winBtn) {
-          winBtn.textContent = "Windows — coming soon";
+          note.textContent = "Downloads are not published yet.";
         }
       });
     })
