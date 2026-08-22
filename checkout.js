@@ -2,8 +2,9 @@
   const catalog = {
     learn: {
       name: "Kang Learn",
-      pro: { month: "$6.9", quarter: "$17.9", year: "$49.9" },
-      max: { month: "$9.9", quarter: "$26.9", year: "$69.9" }
+      month: "$6.9",
+      quarter: "$17.9",
+      year: "$49.9"
     },
     office: {
       name: "Kang Office",
@@ -28,7 +29,6 @@
   const status = document.getElementById("form-status");
   const payButton = document.getElementById("pay-button");
   const payHint = document.getElementById("pay-hint");
-  const learnBox = document.querySelector(".learn-only");
   const nameEl = document.getElementById("summary-name");
   const metaEl = document.getElementById("summary-meta");
   const priceEl = document.getElementById("summary-price");
@@ -37,13 +37,10 @@
   const currencyEl = document.getElementById("summary-currency");
 
   nameEl.textContent = catalog[product].name;
-  learnBox.hidden = product !== "learn";
 
-  const requestedTier = params.get("tier") === "max" ? "max" : "pro";
   const requestedCycle = ["month", "quarter", "year"].includes(params.get("cycle"))
     ? params.get("cycle")
     : "year";
-  document.getElementById(`tier-${requestedTier}`).checked = true;
   document.getElementById(`cycle-${requestedCycle}`).checked = true;
 
   if (params.get("cancelled") === "1") {
@@ -52,16 +49,13 @@
 
   function currentPrice() {
     const cycle = document.querySelector('input[name="cycle"]:checked').value;
-    const tier = document.querySelector('input[name="tier"]:checked').value;
-    const item = catalog[product];
-    if (product === "learn") return item[tier][cycle];
-    return item[cycle];
+    return catalog[product][cycle];
   }
 
   function orderPayload() {
     return {
       product,
-      tier: document.querySelector('input[name="tier"]:checked').value,
+      tier: "pro",
       cycle: document.querySelector('input[name="cycle"]:checked').value,
       region: "int",
       email: document.getElementById("email").value.trim()
@@ -72,11 +66,7 @@
     const cycle = document.querySelector('input[name="cycle"]:checked').value;
     const cycleLabel = cycle[0].toUpperCase() + cycle.slice(1);
     const price = currentPrice();
-    let extra = "";
-    if (product === "learn") {
-      extra = document.getElementById("tier-max").checked ? " · Max" : " · Pro";
-    }
-    metaEl.textContent = `${cycleLabel} · USD${extra}`;
+    metaEl.textContent = `${cycleLabel} · USD`;
     priceEl.textContent = price;
     subEl.textContent = price;
     totalEl.textContent = price;
