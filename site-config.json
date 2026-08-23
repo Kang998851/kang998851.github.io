@@ -1,5 +1,10 @@
 {
   "taobaoUrl": "https://item.taobao.com",
   "taobaoHint": "在淘宝搜索「KangStudio English」购买授权码",
-  "supportEmail": "support@kangstudio.example"
+  "supportEmail": "support@kangstudio.example",
+  "pricing": {
+    "proBuyout": 398,
+    "maxAnnual": 348,
+    "maxBuyout": 698
+  }
 }
