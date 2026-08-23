@@ -1,23 +1,17 @@
 {
-  "version": "1.0.2",
-  "updated": "2026-08-22",
+  "version": "0.1.0",
+  "updated": "2026-08-23",
   "apps": [
     {
       "id": "learn",
-      "name": "Kang Learn",
-      "version": "1.0.2",
+      "name": "KangStudio English",
+      "version": "0.1.0",
       "platforms": {
         "mac-arm64": {
-          "file": "Kang-Learn-1.0.0-mac-arm64.dmg",
-          "size": 121897301,
-          "label": "Mac (Apple silicon) \u00b7 DMG",
-          "url": "https://github.com/Kang998851/kang998851.github.io/releases/download/v1.0.2/Kang-Learn-1.0.0-mac-arm64.dmg"
-        },
-        "win-x64": {
-          "file": "Kang-Learn-1.0.2-win-x64-setup.exe",
-          "size": 97172024,
-          "label": "Windows 10/11 \u00b7 64-bit \u00b7 Installer",
-          "url": "https://github.com/Kang998851/kang998851.github.io/releases/download/v1.0.2/Kang-Learn-1.0.2-win-x64-setup.exe"
+          "file": "KangStudio-English-0.1.0-arm64.dmg",
+          "size": 113343785,
+          "label": "Mac (Apple silicon) · DMG",
+          "url": "https://github.com/Kang998851/kang998851.github.io/releases/download/v0.1.0-english/KangStudio-English-0.1.0-arm64.dmg"
         }
       }
     },
@@ -29,13 +23,13 @@
         "mac-arm64": {
           "file": "Kang-Office-1.0.0-mac-arm64.dmg",
           "size": 98894296,
-          "label": "Mac (Apple silicon) \u00b7 DMG",
+          "label": "Mac (Apple silicon) · DMG",
           "url": "https://github.com/Kang998851/kang998851.github.io/releases/download/v1.0.2/Kang-Office-1.0.0-mac-arm64.dmg"
         },
         "win-x64": {
           "file": "Kang-Office-1.0.2-win-x64-setup.exe",
           "size": 82450414,
-          "label": "Windows 10/11 \u00b7 64-bit \u00b7 Installer",
+          "label": "Windows 10/11 · 64-bit · Installer",
           "url": "https://github.com/Kang998851/kang998851.github.io/releases/download/v1.0.2/Kang-Office-1.0.2-win-x64-setup.exe"
         }
       }
@@ -48,13 +42,13 @@
         "mac-arm64": {
           "file": "Kang-Data-1.0.0-mac-arm64.dmg",
           "size": 98877570,
-          "label": "Mac (Apple silicon) \u00b7 DMG",
+          "label": "Mac (Apple silicon) · DMG",
           "url": "https://github.com/Kang998851/kang998851.github.io/releases/download/v1.0.2/Kang-Data-1.0.0-mac-arm64.dmg"
         },
         "win-x64": {
           "file": "Kang-Data-1.0.2-win-x64-setup.exe",
           "size": 82446311,
-          "label": "Windows 10/11 \u00b7 64-bit \u00b7 Installer",
+          "label": "Windows 10/11 · 64-bit · Installer",
           "url": "https://github.com/Kang998851/kang998851.github.io/releases/download/v1.0.2/Kang-Data-1.0.2-win-x64-setup.exe"
         }
       }

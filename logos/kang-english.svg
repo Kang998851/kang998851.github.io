@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="KangStudio English">
+  <rect width="32" height="32" rx="8.5" fill="#f2ece2"/>
+  <path fill="#0a0a0a" d="M8 7h5.5v8.2L19.5 7H24l-7.8 9.2L24.5 25H19l-5.8-7.2V25H8V7z"/>
+  <rect x="22" y="22" width="8" height="8" fill="#2f9e78"/>
+</svg>
